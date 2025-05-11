@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Small Business Dashboard</title>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+ <!-- Font Awesome for icons -->
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+ <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+ <!-- Sidebar -->
+ <div class="sidebar">
+   <div class="sidebar-header">
+     <h3>Business Dashboard</h3>
+   </div>
+   <ul class="sidebar-menu">
+     <li><a href="#" data-page="dashboard-page" class="active"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+     <li><a href="#" data-page="calendar-page"><i class="fas fa-calendar-alt"></i> Calendar</a></li>
+     <li><a href="#" data-page="crm-page"><i class="fas fa-users"></i> CRM</a></li>
+     <li><a href="#" data-page="finance-page"><i class="fas fa-dollar-sign"></i> Finance</a></li>
+     <li><a href="#" data-page="projects-page"><i class="fas fa-tasks"></i> Projects</a></li>
+     <li><a href="#" data-page="reports-page"><i class="fas fa-chart-bar"></i> Reports</a></li>
+     <li><a href="#" data-page="settings-page"><i class="fas fa-cog"></i> Settings</a></li>
+   </ul>
+ </div>
+ 
+ <!-- Main Content -->
+ <div class="main-content">
+   <!-- Top Bar -->
+   <div class="top-bar">
+     <h2 id="page-title">Dashboard</h2>
+     <div class="user-info">
+       <img src="https://via.placeholder.com/40" alt="User Avatar">
+       <span>John Doe</span>
+       <div class="dropdown" style="position: relative; margin-left: 10px;">
+         <button class="btn btn-sm" id="user-menu-btn"><i class="fas fa-chevron-down"></i></button>
+         <div class="dropdown-menu" id="user-dropdown">
+           <div class="dropdown-item">Profile</div>
+           <div class="dropdown-item">Account Settings</div>
+           <div class="dropdown-item">Logout</div>
+         </div>
+       </div>
+     </div>
+   </div>
+ 
+   <!-- Dashboard Page -->
+   <div id="dashboard-page" class="page-content">
+     <div class="stats-container">
+       <div class="stat-card">
+         <div class="stat-label">Revenue (MTD)</div>
+         <div class="stat-value">$24,500</div>
+         <div class="stat-change">+12% vs last month</div>
+       </div>
+       <div class="stat-card">
+         <div class="stat-label">Expenses (MTD)</div>
+         <div class="stat-value">$16,200</div>
+         <div class="stat-change">-5% vs last month</div>
+       </div>
+       <div class="stat-card">
+         <div class="stat-label">Projects</div>
+         <div class="stat-value">8</div>
+         <div class="stat-change">2 due this week</div>
+       </div>
+       <div class="stat-card">
+         <div class="stat-label">Open Invoices</div>
+         <div class="stat-value">5</div>
+         <div class="stat-change">$12,300 pending</div>
+       </div>
+     </div>
+ 
+     <div class="card">
+       <div class="card-header">
+         <h3>Revenue vs Expenses (2025)</h3>
+       </div>
+       <div class="card-body">
+         <div class="chart-container">
+           <canvas id="revenueExpensesChart"></canvas>
+         </div>
+       </div>
+     </div>
+ 
+     <div class="card">
+       <div class="card-header">
+         <h3>Recent Activities</h3>
+       </div>
+       <div class="card-body">
+         <div class="table-responsive">
+           <table>
+             <thead>
+               <tr>
+                 <th>Date</th>
+                 <th>Activity</th>
+                 <th>Status</th>
+               </tr>
+             </thead>
+             <tbody id="activities-table">
+               <tr>
+                 <td>May 5, 2025</td>
+                 <td>Invoice #1043 sent to Acme Corp</td>
+                 <td><span class="badge badge-primary">Sent</span></td>
+               </tr>
+               <tr>
+                 <td>May 4, 2025</td>
+                 <td>Payment received from TechGiant Inc</td>
+                 <td><span class="badge badge-success">Completed</span></td>
+               </tr>
+               <tr>
+                 <td>May 3, 2025</td>
+                 <td>Project deadline updated: Website Redesign</td>
+                 <td><span class="badge badge-warning">Updated</span></td>
+               </tr>
+               <tr>
+                 <td>May 1, 2025</td>
+                 <td>New lead added: Global Solutions Ltd</td>
+                 <td><span class="badge badge-primary">New</span></td>
+               </tr>
+             </tbody>
+           </table>
+         </div>
+       </div>
+     </div>
+   </div>
+ 
+   <!-- Calendar Page -->
+   <div id="calendar-page" class="page-content">
+     <div class="card">
+       <div class="card-header">
+         <h3>Calendar</h3>
+         <button class="btn btn-primary" id="add-event-btn">Add Event</button>
+       </div>
+       <div class="card-body">
+         <div class="calendar">
+           <div class="calendar-header">
+             <button class="btn btn-secondary" id="prev-month-btn">Previous</button>
+             <h4 id="calendar-month">May 2025</h4>
+             <button class="btn btn-secondary" id="next-month-btn">Next</button>
+           </div>
+           <div class="calendar-grid" id="calendar-days-header">
+             <div class="calendar-day-header">Sun</div>
+             <div class="calendar-day-header">Mon</div>
+             <div class="calendar-day-header">Tue</div>
+             <div class="calendar-day-header">Wed</div>
+             <div class="calendar-day-header">Thu</div>
+             <div class="calendar-day-header">Fri</div>
+             <div class="calendar-day-header">Sat</div>
+           </div>
+           <div class="calendar-grid" id="calendar-days">
+             <!-- Calendar Days will be generated by JavaScript -->
+           </div>
+         </div>
+       </div>
+     </div>
+ 
+     <div class="card">
+       <div class="card-header">
+         <h3>Upcoming Events</h3>
+       </div>
+       <div class="card-body">
+         <div class="table-responsive">
+           <table>
+             <thead>
+               <tr>
+                 <th>Date</th>
+                 <th>Event</th>
+                 <th>Type</th>
+                 <th>Actions</th>
+               </tr>
+             </thead>
+             <tbody id="events-table">
+               <tr>
+                 <td>May 10, 2025</td>
+                 <td>Client Meeting - TechGiant Inc</td>
+                 <td><span class="badge badge-primary">Meeting</span></td>
+                 <td>
+                   <div class="table-actions">
+                     <button class="btn btn-secondary btn-sm">Edit</button>
+                     <button class="btn btn-danger btn-sm">Delete</button>
+                   </div>
+                 </td>
+               </tr>
+               <tr>
+                 <td>May 15-20, 2025</td>
+                 <td>Sarah's Vacation</td>
+                 <td><span class="badge badge-warning">Time Off</span></td>
+                 <td>
+                   <div class="table-actions">
+                     <button class="btn btn-secondary btn-sm">Edit</button>
+                     <button class="btn btn-danger btn-sm">Delete</button>
+                   </div>
+                 </td>
+               </tr>
+               <tr>
+                 <td>May 25, 2025</td>
+                 <td>Project Deadline - Website Redesign</td>
+                 <td><span class="badge badge-danger">Deadline</span></td>
+                 <td>
+                   <div class="table-actions">
+                     <button class="btn btn-secondary btn-sm">Edit</button>
+                     <button class="btn btn-danger btn-sm">Delete</button>
+                   </div>
+                 </td>
+               </tr>
+             </tbody>
+           </table>
+         </div>
+       </div>
+     </div>
+   </div>
+ 
+   <!-- CRM Page -->
+   <div id="crm-page" class="page-content">
+     <div class="card">
+       <div class="card-header">
+         <h3>Contacts</h3>
+         <button class="btn btn-primary" id="add-contact-btn">Add Contact</button>
+       </div>
+       <div class="card-body">
+         <div class="tab-container">
+           <div class="tab-buttons">
+             <button class="tab-button active" data-tab="contacts-tab">Contacts</button>
+             <button class="tab-button" data-tab="companies-tab">Companies</button>
+             <button class="tab-button" data-tab="opportunities-tab">Opportunities</button>
+           </div>
+           <div class="tab-content">
+             <div class="tab-pane" id="all-projects-tab">
+               <!-- Combined projects will be shown here -->
+             </div>
+           </div>
+         </div>
+       </div>
+     </div>
+ 
+     <div class="card">
+       <div class="card-header">
+         <h3>Tasks</h3>
+         <button class="btn btn-primary" id="add-task-btn">Add Task</button>
+       </div>
+       <div class="card-body">
+         <ul class="task-list">
+           <li class="task-item">
+             <input type="checkbox" class="task-checkbox">
+             <div class="task-content">
+               <div class="task-title">Create wireframes for website redesign</div>
+               <div class="task-details">Project: Website Redesign | Due: May 12, 2025</div>
+             </div>
+             <div class="task-actions">
+               <button class="btn btn-secondary btn-sm">Edit</button>
+             </div>
+           </li>
+           <li class="task-item">
+             <input type="checkbox" class="task-checkbox">
+             <div class="task-content">
+               <div class="task-title">Prepare client presentation for TechGiant</div>
+               <div class="task-details">Project: CRM Implementation | Due: May 15, 2025</div>
+             </div>
+             <div class="task-actions">
+               <button class="btn btn-secondary btn-sm">Edit</button>
+             </div>
+           </li>
+           <li class="task-item">
+             <input type="checkbox" class="task-checkbox" checked>
+             <div class="task-content">
+               <div class="task-title completed">Schedule meeting with Global Solutions</div>
+               <div class="task-details">Project: Content Creation | Due: May 5, 2025</div>
+             </div>
+             <div class="task-actions">
+               <button class="btn btn-secondary btn-sm">Edit</button>
+             </div>
+           </li>
+           <li class="task-item">
+             <input type="checkbox" class="task-checkbox">
+             <div class="task-content">
+               <div class="task-title">Review and update social media strategy</div>
+               <div class="task-details">Project: Content Creation | Due: May 18, 2025</div>
+             </div>
+             <div class="task-actions">
+               <button class="btn btn-secondary btn-sm">Edit</button>
+             </div>
+           </li>
+         </ul>
+       </div>
+     </div>
+   </div>
+ 
+   <!-- Reports Page -->
+   <div id="reports-page" class="page-content">
+     <div class="card">
+       <div class="card-header">
+         <h3>Available Reports</h3>
+         <button class="btn btn-primary" id="generate-report-btn">Generate Report</button>
+       </div>
+       <div class="card-body">
+         <div class="reports-grid">
+           <div class="report-card">
+             <div class="report-icon"><i class="fas fa-chart-pie"></i></div>
+             <div class="report-content">
+               <h4>Monthly P&L</h4>
+               <p>Monthly profit and loss statement showing revenue, expenses, and net profit.</p>
+               <div class="report-actions">
+                 <button class="btn btn-secondary btn-sm">View</button>
+                 <button class="btn btn-success btn-sm">Export</button>
+               </div>
+             </div>
+           </div>
+           <div class="report-card">
+             <div class="report-icon"><i class="fas fa-tasks"></i></div>
+             <div class="report-content">
+               <h4>Project Status</h4>
+               <p>Overview of all active projects, their status, and completion percentage.</p>
+               <div class="report-actions">
+                 <button class="btn btn-secondary btn-sm">View</button>
+                 <button class="btn btn-success btn-sm">Export</button>
+               </div>
+             </div>
+           </div>
+           <div class="report-card">
+             <div class="report-icon"><i class="fas fa-stream"></i></div>
+             <div class="report-content">
+               <h4>Sales Pipeline</h4>
+               <p>Analysis of your sales pipeline showing leads, opportunities, and closed deals.</p>
+               <div class="report-actions">
+                 <button class="btn btn-secondary btn-sm">View</button>
+                 <button class="btn btn-success btn-sm">Export</button>
+               </div>
+             </div>
+           </div>
+           <div class="report-card">
+             <div class="report-icon"><i class="fas fa-money-bill-wave"></i></div>
+             <div class="report-content">
+               <h4>Cash Flow</h4>
+               <p>Detailed cash flow analysis showing income and expenses over time.</p>
+               <div class="report-actions">
+                 <button class="btn btn-secondary btn-sm">View</button>
+                 <button class="btn btn-success btn-sm">Export</button>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
+     </div>
+ 
+     <div class="card">
+       <div class="card-header">
+         <h3>Recent Reports</h3>
+       </div>
+       <div class="card-body">
+         <div class="table-responsive">
+           <table>
+             <thead>
+               <tr>
+                 <th>Report Name</th>
+                 <th>Generated Date</th>
+                 <th>Type</th>
+                 <th>Created By</th>
+                 <th>Actions</th>
+               </tr>
+             </thead>
+             <tbody>
+               <tr>
+                 <td>April 2025 P&L Statement</td>
+                 <td>May 5, 2025</td>
+                 <td>Financial</td>
+                 <td>John Doe</td>
+                 <td>
+                   <div class="table-actions">
+                     <button class="btn btn-secondary btn-sm">View</button>
+                     <button class="btn btn-success btn-sm">Download</button>
+                   </div>
+                 </td>
+               </tr>
+               <tr>
+                 <td>Q1 2025 Project Review</td>
+                 <td>Apr 15, 2025</td>
+                 <td>Project</td>
+                 <td>Sarah Johnson</td>
+                 <td>
+                   <div class="table-actions">
+                     <button class="btn btn-secondary btn-sm">View</button>
+                     <button class="btn btn-success btn-sm">Download</button>
+                   </div>
+                 </td>
+               </tr>
+               <tr>
+                 <td>Sales Pipeline - March 2025</td>
+                 <td>Apr 2, 2025</td>
+                 <td>Sales</td>
+                 <td>Mike Kelly</td>
+                 <td>
+                   <div class="table-actions">
+                     <button class="btn btn-secondary btn-sm">View</button>
+                     <button class="btn btn-success btn-sm">Download</button>
+                   </div>
+                 </td>
+               </tr>
+             </tbody>
+           </table>
+         </div>
+       </div>
+     </div>
+   </div>
+ 
+   <!-- Settings Page -->
+   <div id="settings-page" class="page-content">
+     <div class="card">
+       <div class="card-header">
+         <h3>Company Information</h3>
+       </div>
+       <div class="card-body">
+         <form id="company-form">
+           <div class="form-row">
+             <div class="form-col">
+               <div class="form-group">
+                 <label for="company-name">Company Name</label>
+                 <input type="text" id="company-name" class="form-control" value="Your Business Name">
+               </div>
+             </div>
+             <div class="form-col">
+               <div class="form-group">
+                 <label for="company-email">Email</label>
+                 <input type="email" id="company-email" class="form-control" value="contact@yourbusiness.com">
+               </div>
+             </div>
+           </div>
+           <div class="form-row">
+             <div class="form-col">
+               <div class="form-group">
+                 <label for="company-phone">Phone</label>
+                 <input type="tel" id="company-phone" class="form-control" value="+1 (555) 123-4567">
+               </div>
+             </div>
+             <div class="form-col">
+               <div class="form-group">
+                 <label for="company-website">Website</label>
+                 <input type="url" id="company-website" class="form-control" value="https://yourbusiness.com">
+               </div>
+             </div>
+           </div>
+           <div class="form-group">
+             <label for="company-address">Address</label>
+             <textarea id="company-address" class="form-control" rows="3">123 Business St.
+Suite 101
+Anytown, ST 12345</textarea>
+           </div>
+           <button type="submit" class="btn btn-primary">Save Changes</button>
+         </form>
+       </div>
+     </div>
+ 
+     <div class="card">
+       <div class="card-header">
+         <h3>Invoice Settings</h3>
+       </div>
+       <div class="card-body">
+         <form id="invoice-settings-form">
+           <div class="form-row">
+             <div class="form-col">
+               <div class="form-group">
+                 <label for="invoice-prefix">Invoice Prefix</label>
+                 <input type="text" id="invoice-prefix" class="form-control" value="INV-">
+               </div>
+             </div>
+             <div class="form-col">
+               <div class="form-group">
+                 <label for="next-invoice-number">Next Invoice Number</label>
+                 <input type="number" id="next-invoice-number" class="form-control" value="1044">
+               </div>
+             </div>
+           </div>
+           <div class="form-row">
+             <div class="form-col">
+               <div class="form-group">
+                 <label for="default-tax-rate">Default Tax Rate (%)</label>
+                 <input type="number" id="default-tax-rate" class="form-control" value="0" step="0.01">
+               </div>
+             </div>
+             <div class="form-col">
+               <div class="form-group">
+                 <label for="payment-terms">Payment Terms (days)</label>
+                 <input type="number" id="payment-terms" class="form-control" value="30">
+               </div>
+             </div>
+           </div>
+           <div class="form-group">
+             <label for="invoice-notes">Default Invoice Notes</label>
+             <textarea id="invoice-notes" class="form-control" rows="3">Thank you for your business!</textarea>
+           </div>
+           <button type="submit" class="btn btn-primary">Save Changes</button>
+         </form>
+       </div>
+     </div>
+ 
+     <div class="card">
+       <div class="card-header">
+         <h3>User Preferences</h3>
+       </div>
+       <div class="card-body">
+         <form id="user-preferences-form">
+           <div class="form-group">
+             <label for="user-email">Email</label>
+             <input type="email" id="user-email" class="form-control" value="john.doe@yourbusiness.com">
+           </div>
+           <div class="form-row">
+             <div class="form-col">
+               <div class="form-group">
+                 <label for="current-password">Current Password</label>
+                 <input type="password" id="current-password" class="form-control">
+               </div>
+             </div>
+             <div class="form-col">
+               <div class="form-group">
+                 <label for="new-password">New Password</label>
+                 <input type="password" id="new-password" class="form-control">
+               </div>
+             </div>
+           </div>
+           <div class="form-group">
+             <label>Notification Preferences</label>
+             <div>
+               <div style="margin-bottom: 8px;">
+                 <input type="checkbox" id="notify-invoices" checked>
+                 <label for="notify-invoices">Invoice Updates</label>
+               </div>
+               <div style="margin-bottom: 8px;">
+                 <input type="checkbox" id="notify-projects" checked>
+                 <label for="notify-projects">Project Updates</label>
+               </div>
+               <div style="margin-bottom: 8px;">
+                 <input type="checkbox" id="notify-tasks">
+                 <label for="notify-tasks">Task Assignments</label>
+               </div>
+             </div>
+           </div>
+           <button type="submit" class="btn btn-primary">Save Changes</button>
+         </form>
+       </div>
+     </div>
+   </div>
+ 
+   <!-- Modal Backdrop -->
+   <div id="modal-backdrop" class="modal-backdrop">
+     <!-- Event Modal -->
+     <div class="modal" id="event-modal">
+       <div class="modal-header">
+         <h3 class="modal-title">Add Event</h3>
+         <button class="modal-close" id="close-event-modal">&times;</button>
+       </div>
+       <div class="modal-body">
+         <form id="event-form">
+           <div class="form-group">
+             <label for="event-title">Event Title</label>
+             <input type="text" id="event-title" class="form-control" required>
+           </div>
+           <div class="form-row">
+             <div class="form-col">
+               <div class="form-group">
+                 <label for="event-start-date">Start Date</label>
+                 <input type="date" id="event-start-date" class="form-control" required>
+               </div>
+             </div>
+             <div class="form-col">
+               <div class="form-group">
+                 <label for="event-end-date">End Date</label>
+                 <input type="date" id="event-end-date" class="form-control">
+               </div>
+             </div>
+           </div>
+           <div class="form-group">
+             <label for="event-type">Event Type</label>
+             <select id="event-type" class="form-control">
+               <option value="meeting">Meeting</option>
+               <option value="deadline">Deadline</option>
+               <option value="timeoff">Time Off</option>
+               <option value="other">Other</option>
+             </select>
+           </div>
+           <div class="form-group">
+             <label for="event-description">Description</label>
+             <textarea id="event-description" class="form-control" rows="3"></textarea>
+           </div>
+         </form>
+       </div>
+       <div class="modal-footer">
+         <button class="btn btn-secondary" id="cancel-event-btn">Cancel</button>
+         <button class="btn btn-primary" id="save-event-btn">Save Event</button>
+       </div>
+     </div>
+ 
+     <!-- Contact Modal -->
+     <div class="modal" id="contact-modal">
+       <div class="modal-header">
+         <h3 class="modal-title">Add Contact</h3>
+         <button class="modal-close" id="close-contact-modal">&times;</button>
+       </div>
+       <div class="modal-body">
+         <form id="contact-form">
+           <div class="form-row">
+             <div class="form-col">
+               <div class="form-group">
+                 <label for="contact-first-name">First Name</label>
+                 <input type="text" id="contact-first-name" class="form-control" required>
+               </div>
+             </div>
+             <div class="form-col">
+               <div class="form-group">
+                 <label for="contact-last-name">Last Name</label>
+                 <input type="text" id="contact-last-name" class="form-control" required>
+               </div>
+             </div>
+           </div>
+           <div class="form-group">
+             <label for="contact-company">Company</label>
+             <input type="text" id="contact-company" class="form-control">
+           </div>
+           <div class="form-group">
+             <label for="contact-email">Email</label>
+             <input type="email" id="contact-email" class="form-control" required>
+           </div>
+           <div class="form-group">
+             <label for="contact-phone">Phone</label>
+             <input type="tel" id="contact-phone" class="form-control">
+           </div>
+           <div class="form-group">
+             <label for="contact-status">Status</label>
+             <select id="contact-status" class="form-control">
+               <option value="lead">Lead</option>
+               <option value="prospect">Prospect</option>
+               <option value="customer">Customer</option>
+               <option value="inactive">Inactive</option>
+             </select>
+           </div>
+         </form>
+       </div>
+       <div class="modal-footer">
+         <button class="btn btn-secondary" id="cancel-contact-btn">Cancel</button>
+         <button class="btn btn-primary" id="save-contact-btn">Save Contact</button>
+       </div>
+     </div>
+ 
+     <!-- Invoice Modal -->
+     <div class="modal" id="invoice-modal">
+       <div class="modal-header">
+         <h3 class="modal-title">Create Invoice</h3>
+         <button class="modal-close" id="close-invoice-modal">&times;</button>
+       </div>
+       <div class="modal-body">
+         <form id="invoice-form">
+           <div class="form-row">
+             <div class="form-col">
+               <div class="form-group">
+                 <label for="invoice-number">Invoice #</label>
+                 <input type="text" id="invoice-number" class="form-control" value="INV-1044" readonly>
+               </div>
+             </div>
+             <div class="form-col">
+               <div class="form-group">
+                 <label for="invoice-client">Client</label>
+                 <select id="invoice-client" class="form-control" required>
+                   <option value="">Select a client</option>
+                   <option value="acme">Acme Corp</option>
+                   <option value="techgiant">TechGiant Inc</option>
+                   <option value="globalsolutions">Global Solutions Ltd</option>
+                 </select>
+               </div>
+             </div>
+           </div>
+           <div class="form-row">
+             <div class="form-col">
+               <div class="form-group">
+                 <label for="invoice-date">Issue Date</label>
+                 <input type="date" id="invoice-date" class="form-control" required>
+               </div>
+             </div>
+             <div class="form-col">
+               <div class="form-group">
+                 <label for="invoice-due-date">Due Date</label>
+                 <input type="date" id="invoice-due-date" class="form-control" required>
+               </div>
+             </div>
+           </div>
+           <!-- Invoice items will be added here via JavaScript -->
+         </form>
+       </div>
+       <div class="modal-footer">
+         <button class="btn btn-secondary" id="cancel-invoice-btn">Cancel</button>
+         <button class="btn btn-primary" id="save-invoice-btn">Save Invoice</button>
+       </div>
+     </div>ane active" id="contacts-tab">
+               <div class="table-responsive">
+                 <table>
+                   <thead>
+                     <tr>
+                       <th>Name</th>
+                       <th>Company</th>
+                       <th>Email</th>
+                       <th>Phone</th>
+                       <th>Status</th>
+                       <th>Actions</th>
+                     </tr>
+                   </thead>
+                   <tbody id="contacts-table">
+                     <tr>
+                       <td>John Smith</td>
+                       <td>Acme Corp</td>
+                       <td>john@acmecorp.com</td>
+                       <td>(555) 123-4567</td>
+                       <td><span class="badge badge-success">Customer</span></td>
+                       <td>
+                         <div class="table-actions">
+                           <button class="btn btn-secondary btn-sm">Edit</button>
+                           <button class="btn btn-danger btn-sm">Delete</button>
+                         </div>
+                       </td>
+                     </tr>
+                     <tr>
+                       <td>Emily Johnson</td>
+                       <td>TechGiant Inc</td>
+                       <td>emily@techgiant.com</td>
+                       <td>(555) 987-6543</td>
+                       <td><span class="badge badge-warning">Lead</span></td>
+                       <td>
+                         <div class="table-actions">
+                           <button class="btn btn-secondary btn-sm">Edit</button>
+                           <button class="btn btn-danger btn-sm">Delete</button>
+                         </div>
+                       </td>
+                     </tr>
+                     <tr>
+                       <td>Michael Brown</td>
+                       <td>Global Solutions Ltd</td>
+                       <td>michael@globalsolutions.com</td>
+                       <td>(555) 456-7890</td>
+                       <td><span class="badge badge-primary">Prospect</span></td>
+                       <td>
+                         <div class="table-actions">
+                           <button class="btn btn-secondary btn-sm">Edit</button>
+                           <button class="btn btn-danger btn-sm">Delete</button>
+                         </div>
+                       </td>
+                     </tr>
+                   </tbody>
+                 </table>
+               </div>
+             </div>
+             <div class="tab-pane" id="companies-tab">
+               <div class="table-responsive">
+                 <table>
+                   <thead>
+                     <tr>
+                       <th>Company</th>
+                       <th>Industry</th>
+                       <th>Website</th>
+                       <th>Contacts</th>
+                       <th>Status</th>
+                       <th>Actions</th>
+                     </tr>
+                   </thead>
+                   <tbody>
+                     <tr>
+                       <td>Acme Corp</td>
+                       <td>Manufacturing</td>
+                       <td>acmecorp.com</td>
+                       <td>2</td>
+                       <td><span class="badge badge-success">Active</span></td>
+                       <td>
+                         <div class="table-actions">
+                           <button class="btn btn-secondary btn-sm">Edit</button>
+                           <button class="btn btn-danger btn-sm">Delete</button>
+                         </div>
+                       </td>
+                     </tr>
+                     <tr>
+                       <td>TechGiant Inc</td>
+                       <td>Technology</td>
+                       <td>techgiant.com</td>
+                       <td>3</td>
+                       <td><span class="badge badge-success">Active</span></td>
+                       <td>
+                         <div class="table-actions">
+                           <button class="btn btn-secondary btn-sm">Edit</button>
+                           <button class="btn btn-danger btn-sm">Delete</button>
+                         </div>
+                       </td>
+                     </tr>
+                     <tr>
+                       <td>Global Solutions Ltd</td>
+                       <td>Consulting</td>
+                       <td>globalsolutions.com</td>
+                       <td>1</td>
+                       <td><span class="badge badge-warning">Lead</span></td>
+                       <td>
+                         <div class="table-actions">
+                           <button class="btn btn-secondary btn-sm">Edit</button>
+                           <button class="btn btn-danger btn-sm">Delete</button>
+                         </div>
+                       </td>
+                     </tr>
+                   </tbody>
+                 </table>
+               </div>
+             </div>
+             <div class="tab-pane" id="opportunities-tab">
+               <div class="table-responsive">
+                 <table>
+                   <thead>
+                     <tr>
+                       <th>Opportunity</th>
+                       <th>Company</th>
+                       <th>Value</th>
+                       <th>Stage</th>
+                       <th>Assigned To</th>
+                       <th>Actions</th>
+                     </tr>
+                   </thead>
+                   <tbody>
+                     <tr>
+                       <td>Website Redesign</td>
+                       <td>Acme Corp</td>
+                       <td>$12,500</td>
+                       <td><span class="badge badge-primary">Proposal</span></td>
+                       <td>John Doe</td>
+                       <td>
+                         <div class="table-actions">
+                           <button class="btn btn-secondary btn-sm">Edit</button>
+                           <button class="btn btn-danger btn-sm">Delete</button>
+                         </div>
+                       </td>
+                     </tr>
+                     <tr>
+                       <td>CRM Implementation</td>
+                       <td>TechGiant Inc</td>
+                       <td>$45,000</td>
+                       <td><span class="badge badge-warning">Negotiation</span></td>
+                       <td>Sarah Johnson</td>
+                       <td>
+                         <div class="table-actions">
+                           <button class="btn btn-secondary btn-sm">Edit</button>
+                           <button class="btn btn-danger btn-sm">Delete</button>
+                         </div>
+                       </td>
+                     </tr>
+                     <tr>
+                       <td>Marketing Campaign</td>
+                       <td>Global Solutions Ltd</td>
+                       <td>$8,750</td>
+                       <td><span class="badge badge-success">Closed Won</span></td>
+                       <td>Mike Kelly</td>
+                       <td>
+                         <div class="table-actions">
+                           <button class="btn btn-secondary btn-sm">Edit</button>
+                           <button class="btn btn-danger btn-sm">Delete</button>
+                         </div>
+                       </td>
+                     </tr>
+                   </tbody>
+                 </table>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
+     </div>
+   </div>
+ 
+   <!-- Finance Page -->
+   <div id="finance-page" class="page-content">
+     <div class="card">
+       <div class="card-header">
+         <h3>Financial Overview</h3>
+       </div>
+       <div class="card-body">
+         <div class="chart-container">
+           <canvas id="financeChart"></canvas>
+         </div>
+       </div>
+     </div>
+ 
+     <div class="card">
+       <div class="card-header">
+         <h3>Invoices</h3>
+         <button class="btn btn-primary" id="create-invoice-btn">Create Invoice</button>
+       </div>
+       <div class="card-body">
+         <div class="tab-container">
+           <div class="tab-buttons">
+             <button class="tab-button active" data-tab="unpaid-tab">Unpaid</button>
+             <button class="tab-button" data-tab="paid-tab">Paid</button>
+             <button class="tab-button" data-tab="all-invoices-tab">All</button>
+           </div>
+           <div class="tab-content">
+             <div class="tab-pane active" id="unpaid-tab">
+               <div class="table-responsive">
+                 <table>
+                   <thead>
+                     <tr>
+                       <th>Invoice #</th>
+                       <th>Client</th>
+                       <th>Issue Date</th>
+                       <th>Due Date</th>
+                       <th>Amount</th>
+                       <th>Status</th>
+                       <th>Actions</th>
+                     </tr>
+                   </thead>
+                   <tbody>
+                     <tr>
+                       <td>INV-1043</td>
+                       <td>Acme Corp</td>
+                       <td>May 5, 2025</td>
+                       <td>Jun 4, 2025</td>
+                       <td>$8,500.00</td>
+                       <td><span class="badge badge-warning">Pending</span></td>
+                       <td>
+                         <div class="table-actions">
+                           <button class="btn btn-secondary btn-sm view-invoice-btn">View</button>
+                           <button class="btn btn-success btn-sm">Mark Paid</button>
+                         </div>
+                       </td>
+                     </tr>
+                     <tr>
+                       <td>INV-1042</td>
+                       <td>TechGiant Inc</td>
+                       <td>Apr 28, 2025</td>
+                       <td>May 28, 2025</td>
+                       <td>$3,250.00</td>
+                       <td><span class="badge badge-warning">Pending</span></td>
+                       <td>
+                         <div class="table-actions">
+                           <button class="btn btn-secondary btn-sm view-invoice-btn">View</button>
+                           <button class="btn btn-success btn-sm">Mark Paid</button>
+                         </div>
+                       </td>
+                     </tr>
+                     <tr>
+                       <td>INV-1041</td>
+                       <td>Global Solutions Ltd</td>
+                       <td>Apr 15, 2025</td>
+                       <td>May 15, 2025</td>
+                       <td>$5,750.00</td>
+                       <td><span class="badge badge-danger">Overdue</span></td>
+                       <td>
+                         <div class="table-actions">
+                           <button class="btn btn-secondary btn-sm view-invoice-btn">View</button>
+                           <button class="btn btn-success btn-sm">Mark Paid</button>
+                         </div>
+                       </td>
+                     </tr>
+                   </tbody>
+                 </table>
+               </div>
+             </div>
+             <div class="tab-pane" id="paid-tab">
+               <div class="table-responsive">
+                 <table>
+                   <thead>
+                     <tr>
+                       <th>Invoice #</th>
+                       <th>Client</th>
+                       <th>Issue Date</th>
+                       <th>Paid Date</th>
+                       <th>Amount</th>
+                       <th>Status</th>
+                       <th>Actions</th>
+                     </tr>
+                   </thead>
+                   <tbody>
+                     <tr>
+                       <td>INV-1040</td>
+                       <td>TechGiant Inc</td>
+                       <td>Apr 1, 2025</td>
+                       <td>Apr 15, 2025</td>
+                       <td>$12,400.00</td>
+                       <td><span class="badge badge-success">Paid</span></td>
+                       <td>
+                         <div class="table-actions">
+                           <button class="btn btn-secondary btn-sm view-invoice-btn">View</button>
+                         </div>
+                       </td>
+                     </tr>
+                     <tr>
+                       <td>INV-1039</td>
+                       <td>Acme Corp</td>
+                       <td>Mar 15, 2025</td>
+                       <td>Apr 10, 2025</td>
+                       <td>$5,200.00</td>
+                       <td><span class="badge badge-success">Paid</span></td>
+                       <td>
+                         <div class="table-actions">
+                           <button class="btn btn-secondary btn-sm view-invoice-btn">View</button>
+                         </div>
+                       </td>
+                     </tr>
+                   </tbody>
+                 </table>
+               </div>
+             </div>
+             <div class="tab-pane" id="all-invoices-tab">
+               <!-- Combined invoices will be shown here -->
+             </div>
+           </div>
+         </div>
+       </div>
+     </div>
+ 
+     <div class="card">
+       <div class="card-header">
+         <h3>Expenses</h3>
+         <button class="btn btn-primary" id="add-expense-btn">Add Expense</button>
+       </div>
+       <div class="card-body">
+         <div class="table-responsive">
+           <table>
+             <thead>
+               <tr>
+                 <th>Date</th>
+                 <th>Category</th>
+                 <th>Vendor</th>
+                 <th>Description</th>
+                 <th>Amount</th>
+                 <th>Status</th>
+                 <th>Actions</th>
+               </tr>
+             </thead>
+             <tbody id="expenses-table">
+               <tr>
+                 <td>May 2, 2025</td>
+                 <td>Office Supplies</td>
+                 <td>Office Depot</td>
+                 <td>Printer paper and ink</td>
+                 <td>$125.75</td>
+                 <td><span class="badge badge-success">Paid</span></td>
+                 <td>
+                   <div class="table-actions">
+                     <button class="btn btn-secondary btn-sm">Edit</button>
+                   </div>
+                 </td>
+               </tr>
+               <tr>
+                 <td>Apr 28, 2025</td>
+                 <td>Software</td>
+                 <td>Adobe</td>
+                 <td>Creative Cloud subscription</td>
+                 <td>$54.99</td>
+                 <td><span class="badge badge-success">Paid</span></td>
+                 <td>
+                   <div class="table-actions">
+                     <button class="btn btn-secondary btn-sm">Edit</button>
+                   </div>
+                 </td>
+               </tr>
+               <tr>
+                 <td>Apr 15, 2025</td>
+                 <td>Rent</td>
+                 <td>Business Park LLC</td>
+                 <td>Office rent for May</td>
+                 <td>$2,500.00</td>
+                 <td><span class="badge badge-success">Paid</span></td>
+                 <td>
+                   <div class="table-actions">
+                     <button class="btn btn-secondary btn-sm">Edit</button>
+                   </div>
+                 </td>
+               </tr>
+             </tbody>
+           </table>
+         </div>
+       </div>
+     </div>
+   </div>
+ 
+   <!-- Projects Page -->
+   <div id="projects-page" class="page-content">
+     <div class="card">
+       <div class="card-header">
+         <h3>Projects</h3>
+         <button class="btn btn-primary" id="add-project-btn">Add Project</button>
+       </div>
+       <div class="card-body">
+         <div class="tab-container">
+           <div class="tab-buttons">
+             <button class="tab-button active" data-tab="active-projects-tab">Active</button>
+             <button class="tab-button" data-tab="completed-projects-tab">Completed</button>
+             <button class="tab-button" data-tab="all-projects-tab">All</button>
+           </div>
+           <div class="tab-content">
+             <div class="tab-pane active" id="active-projects-tab">
+               <div class="project-card">
+                 <div class="project-status status-green"></div>
+                 <div class="project-content">
+                   <div class="project-header">
+                     <span class="project-title">Website Redesign</span>
+                     <span class="project-date">Due: Jun 15, 2025</span>
+                   </div>
+                   <div class="project-description">
+                     Complete redesign of Acme Corp's corporate website with improved UI/UX.
+                   </div>
+                   <div class="project-footer">
+                     <div class="project-assignees">
+                       <div class="project-assignee">JD</div>
+                       <div class="project-assignee">AS</div>
+                     </div>
+                     <span class="badge badge-success">On Track</span>
+                   </div>
+                 </div>
+               </div>
+               <div class="project-card">
+                 <div class="project-status status-yellow"></div>
+                 <div class="project-content">
+                   <div class="project-header">
+                     <span class="project-title">CRM Implementation</span>
+                     <span class="project-date">Due: Jul 20, 2025</span>
+                   </div>
+                   <div class="project-description">
+                     Migration and setup of TechGiant's customer relationship management system.
+                   </div>
+                   <div class="project-footer">
+                     <div class="project-assignees">
+                       <div class="project-assignee">MK</div>
+                       <div class="project-assignee">RW</div>
+                     </div>
+                     <span class="badge badge-warning">At Risk</span>
+                   </div>
+                 </div>
+               </div>
+               <div class="project-card">
+                 <div class="project-status status-red"></div>
+                 <div class="project-content">
+                   <div class="project-header">
+                     <span class="project-title">Content Creation</span>
+                     <span class="project-date">Due: May 25, 2025</span>
+                   </div>
+                   <div class="project-description">
+                     Creation of marketing content for Global Solutions' new product launch.
+                   </div>
+                   <div class="project-footer">
+                     <div class="project-assignees">
+                       <div class="project-assignee">AS</div>
+                     </div>
+                     <span class="badge badge-danger">Delayed</span>
+                   </div>
+                 </div>
+               </div>
+             </div>
+             <div class="tab-pane" id="completed-projects-tab">
+               <div class="project-card">
+                 <div class="project-status status-green"></div>
+                 <div class="project-content">
+                   <div class="project-header">
+                     <span class="project-title">Logo Redesign</span>
+                     <span class="project-date">Completed: Apr 2, 2025</span>
+                   </div>
+                   <div class="project-description">
+                     New logo and brand identity for Global Solutions Ltd.
+                   </div>
+                   <div class="project-footer">
+                     <div class="project-assignees">
+                       <div class="project-assignee">JD</div>
+                     </div>
+                     <span class="badge badge-success">Completed</span>
+                   </div>
+                 </div>
+               </div>
+               <div class="project-card">
+                 <div class="project-status status-green"></div>
+                 <div class="project-content">
+                   <div class="project-header">
+                     <span class="project-title">Email Campaign</span>
+                     <span class="project-date">Completed: Mar 15, 2025</span>
+                   </div>
+                   <div class="project-description">
+                     Q1 email marketing campaign for Acme Corp.
+                   </div>
+                   <div class="project-footer">
+                     <div class="project-assignees">
+                       <div class="project-assignee">AS</div>
+                       <div class="project-assignee">RW</div>
+                     </div>
+                     <span class="badge badge-success">Completed</span>
+                   </div>
+                 </div>
+               </div>
+             </div>
+             <div class="tab-p
